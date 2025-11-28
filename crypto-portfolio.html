@@ -123,6 +123,52 @@
         </div>
       </section>
 
+      <!-- PINNED DASHBOARD -->
+      <section class="rounded-2xl border border-slate-800 bg-slate-900/70 px-3 py-4 sm:px-5 sm:py-5 shadow-sm shadow-emerald-500/10">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p class="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400">Pinned dashboard</p>
+            <p class="mt-1 text-[11px] text-slate-500">Build your own at-a-glance board of metrics & charts.</p>
+          </div>
+          <p class="text-[10px] text-slate-500">Selections persist in this browser.</p>
+        </div>
+        <div id="pinned-grid" class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
+        <div class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4 text-[11px] text-slate-300">
+          <label class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+            <input type="checkbox" class="pin-toggle h-3 w-3 rounded border-slate-600 bg-slate-950 text-emerald-500 focus:ring-emerald-500" data-pin-key="totalValue">
+            <span>Total balance</span>
+          </label>
+          <label class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+            <input type="checkbox" class="pin-toggle h-3 w-3 rounded border-slate-600 bg-slate-950 text-emerald-500 focus:ring-emerald-500" data-pin-key="pnlPct">
+            <span>Unrealized P/L %</span>
+          </label>
+          <label class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+            <input type="checkbox" class="pin-toggle h-3 w-3 rounded border-slate-600 bg-slate-950 text-emerald-500 focus:ring-emerald-500" data-pin-key="sharpe">
+            <span>Sharpe & volatility</span>
+          </label>
+          <label class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+            <input type="checkbox" class="pin-toggle h-3 w-3 rounded border-slate-600 bg-slate-950 text-emerald-500 focus:ring-emerald-500" data-pin-key="drawdown">
+            <span>Max drawdown</span>
+          </label>
+          <label class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+            <input type="checkbox" class="pin-toggle h-3 w-3 rounded border-slate-600 bg-slate-950 text-emerald-500 focus:ring-emerald-500" data-pin-key="var">
+            <span>VaR & crash test</span>
+          </label>
+          <label class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+            <input type="checkbox" class="pin-toggle h-3 w-3 rounded border-slate-600 bg-slate-950 text-emerald-500 focus:ring-emerald-500" data-pin-key="backtest">
+            <span>Backtest CAGR</span>
+          </label>
+          <label class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+            <input type="checkbox" class="pin-toggle h-3 w-3 rounded border-slate-600 bg-slate-950 text-emerald-500 focus:ring-emerald-500" data-pin-key="winRate">
+            <span>Win rate</span>
+          </label>
+          <label class="flex items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/60 px-3 py-2">
+            <input type="checkbox" class="pin-toggle h-3 w-3 rounded border-slate-600 bg-slate-950 text-emerald-500 focus:ring-emerald-500" data-pin-key="scenario">
+            <span>Scenario outcome</span>
+          </label>
+        </div>
+      </section>
+
       <!-- MAIN GRID -->
       <section class="grid gap-6 lg:grid-cols-[minmax(0,2.1fr)_minmax(0,1.2fr)] items-start">
 
@@ -356,7 +402,7 @@
               <div class="rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-3 space-y-3">
                 <div class="flex items-baseline justify-between gap-2">
                   <p class="uppercase tracking-[0.18em] text-[9px] text-slate-500">Scenario lab</p>
-                  <span class="text-[10px] text-slate-400">What-if calculator</span>
+                  <span class="text-[10px] text-slate-400">Macro & custom shocks</span>
                 </div>
                 <form id="scenario-form" class="space-y-2.5">
                   <div class="space-y-1">
@@ -368,16 +414,28 @@
                   </div>
                   <div class="space-y-1">
                     <label for="scenario-move" class="text-[9px] uppercase tracking-[0.18em] text-slate-500">
-                      Market move
+                      Macro backdrop
+                    </label>
+                    <select id="scenario-preset"
+                            class="w-full rounded-xl border border-slate-700 bg-slate-950/70 px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/70 focus:ring-offset-1 focus:ring-offset-slate-950">
+                      <option value="inflation">Inflation spike</option>
+                      <option value="rateHike">Rate hike cycle</option>
+                      <option value="liquidity">Liquidity crunch</option>
+                      <option value="reflation" selected>Risk-on reflation</option>
+                    </select>
+                  </div>
+                  <div class="space-y-1">
+                    <label for="scenario-move" class="text-[9px] uppercase tracking-[0.18em] text-slate-500">
+                      Custom shock override
                     </label>
                     <select id="scenario-move"
                             class="w-full rounded-xl border border-slate-700 bg-slate-950/70 px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500/70 focus:ring-offset-1 focus:ring-offset-slate-950">
-                      <option value="-0.50">Crash · -50%</option>
+                      <option value="">Use preset shock</option>
                       <option value="-0.30">Deep red · -30%</option>
                       <option value="-0.10">Pullback · -10%</option>
                       <option value="0">Flat · 0%</option>
                       <option value="0.10">Green day · +10%</option>
-                      <option value="0.30" selected>Rally · +30%</option>
+                      <option value="0.30">Rally · +30%</option>
                       <option value="1.00">Moonshot · +100%</option>
                     </select>
                   </div>
@@ -398,6 +456,38 @@
                     Add holdings first to make this meaningful.
                   </p>
                 </div>
+              </div>
+              
+              <div class="rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-3 space-y-3 md:col-span-2">
+                <div class="flex items-baseline justify-between gap-2">
+                  <p class="uppercase tracking-[0.18em] text-[9px] text-slate-500">Strategy backtest (synthetic)</p>
+                  <span class="text-[10px] text-slate-400">Monthly toy history</span>
+                </div>
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 text-[11px] text-slate-300">
+                  <div class="rounded-lg border border-slate-800 bg-slate-900/60 px-3 py-2.5">
+                    <p class="text-[9px] uppercase tracking-[0.18em] text-slate-500">CAGR</p>
+                    <p id="backtest-cagr" class="mt-1 text-sm font-semibold text-slate-100">--</p>
+                    <p class="text-[10px] text-slate-500">From synthetic monthly returns.</p>
+                  </div>
+                  <div class="rounded-lg border border-slate-800 bg-slate-900/60 px-3 py-2.5">
+                    <p class="text-[9px] uppercase tracking-[0.18em] text-slate-500">Sharpe</p>
+                    <p id="backtest-sharpe" class="mt-1 text-sm font-semibold text-slate-100">--</p>
+                    <p class="text-[10px] text-slate-500">Risk-adjusted vs cash.</p>
+                  </div>
+                  <div class="rounded-lg border border-slate-800 bg-slate-900/60 px-3 py-2.5">
+                    <p class="text-[9px] uppercase tracking-[0.18em] text-slate-500">Max drawdown</p>
+                    <p id="backtest-maxdd" class="mt-1 text-sm font-semibold text-slate-100">--</p>
+                    <p class="text-[10px] text-slate-500">Worst drop on the curve.</p>
+                  </div>
+                  <div class="rounded-lg border border-slate-800 bg-slate-900/60 px-3 py-2.5">
+                    <p class="text-[9px] uppercase tracking-[0.18em] text-slate-500">Win rate</p>
+                    <p id="backtest-winrate" class="mt-1 text-sm font-semibold text-slate-100">--</p>
+                    <p class="text-[10px] text-slate-500">Share of months that were green.</p>
+                  </div>
+                </div>
+                <p id="backtest-note" class="text-[10px] text-slate-500">
+                  Uses a small synthetic history per asset; treat as directional intuition only.
+                </p>
               </div>
             </div>
           </section>
@@ -448,7 +538,7 @@
             <header class="flex items-start justify-between gap-3">
               <div>
                 <h2 id="asset-form-title" class="text-sm font-semibold tracking-tight">Add position</h2>
-                <p class="mt-1 text-[11px] text-slate-500">Everything stays local in your browser.</p>
+                <p class="mt-1 text-[11px] text-slate-500">Portfolio data stays local; live prices and news load from public APIs.</p>
               </div>
               <span class="hidden sm:inline-flex items-center rounded-full border border-slate-700 bg-slate-950/80 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-slate-400">
                 Local only
@@ -627,7 +717,16 @@
   </footer>
 </div>
 
-<script>
+<script type="module">
+import {
+  calculatePortfolio,
+  computeCumulativeReturn,
+  computeVaRAndCorrelations,
+  simulateAssetReturns,
+  projectScenarioOutcome,
+  backtestPortfolioStrategies,
+  MACRO_SCENARIOS
+} from './app-core.js';
 /* ---------------------- Static universe & state ---------------------- */
 const COINS = [
   { id: "bitcoin",      symbol: "BTC",  name: "Bitcoin" },
@@ -647,7 +746,8 @@ const COINS = [
 const STORAGE_KEYS = {
   portfolio: "minimal-crypto-portfolio-v2-portfolio",
   watchlist: "minimal-crypto-portfolio-v2-watchlist",
-  alerts:    "minimal-crypto-portfolio-v2-alerts"
+  alerts:    "minimal-crypto-portfolio-v2-alerts",
+  pinned:    "minimal-crypto-portfolio-v2-pins"
 };
 
 // Very rough benchmark assumptions
@@ -675,6 +775,10 @@ const state = {
     }
   },
   lastPortfolioData: null,
+  lastScenarioOutcome: null,
+  lastBacktest: null,
+  lastRisk: null,
+  pinnedMetrics: [],
   news: [],
   newsFilter: "all",
   newsAutoScrollIndex: 0,
@@ -697,6 +801,7 @@ const el = {
   bestChange: document.getElementById("best-asset-change"),
   worstName: document.getElementById("worst-asset-name"),
   worstChange: document.getElementById("worst-asset-change"),
+  pinnedGrid: document.getElementById("pinned-grid"),
   holdingsBody: document.getElementById("holdings-body"),
   noHoldings: document.getElementById("no-holdings"),
   allocationList: document.getElementById("allocation-list"),
@@ -731,8 +836,14 @@ const el = {
   riskStressSummary: document.getElementById("risk-stress-summary"),
   riskCorrGrid: document.getElementById("risk-corr-grid"),
   riskInsightText: document.getElementById("risk-insight-text"),
+  backtestCagr: document.getElementById("backtest-cagr"),
+  backtestSharpe: document.getElementById("backtest-sharpe"),
+  backtestMaxdd: document.getElementById("backtest-maxdd"),
+  backtestWinrate: document.getElementById("backtest-winrate"),
+  backtestNote: document.getElementById("backtest-note"),
   scenarioForm: document.getElementById("scenario-form"),
   scenarioAmount: document.getElementById("scenario-amount"),
+  scenarioPreset: document.getElementById("scenario-preset"),
   scenarioMove: document.getElementById("scenario-move"),
   scenarioResultValue: document.getElementById("scenario-result-value"),
   scenarioResultPnl: document.getElementById("scenario-result-pnl"),
@@ -827,65 +938,17 @@ function loadAlerts() {
     lastTriggered: a.lastTriggered || null
   }));
 }
+function loadPins() {
+  const data = loadJson(STORAGE_KEYS.pinned, null);
+  if (Array.isArray(data) && data.length) return data;
+  return ["totalValue","pnlPct","sharpe","var","scenario","backtest"];
+}
 function updateTrendClass(node, value) {
   if (!node) return;
   node.classList.remove("text-emerald-400", "text-emerald-300", "text-rose-400", "text-rose-300", "text-slate-300", "text-slate-400");
   if (!isFinite(value) || value === 0) node.classList.add("text-slate-300");
   else if (value > 0) node.classList.add("text-emerald-400");
   else node.classList.add("text-rose-400");
-}
-
-/* ---------------------- Portfolio calculations ---------------------- */
-function calculatePortfolio(portfolio, priceData) {
-  let totalValue = 0;
-  let totalCost = 0;
-  let dayChangeAbs = 0;
-
-  const detailed = portfolio.map(h => {
-    const info = priceData[h.id] || {};
-    const hasPrice = typeof info.usd === "number";
-    const price = hasPrice ? info.usd : (h.buyPrice || 0);
-    const changePct = typeof info.usd_24h_change === "number" ? info.usd_24h_change : 0;
-
-    const amount = Number(h.amount) || 0;
-    const value = amount * price;
-    const costPer = h.buyPrice > 0 ? h.buyPrice : price;
-    const cost = amount * costPer;
-    const pnlAbs = value - cost;
-    const pnlPct = cost ? pnlAbs / cost * 100 : 0;
-
-    totalValue += value;
-    totalCost += cost;
-    dayChangeAbs += value * (changePct / 100);
-
-    return { ...h, amount, price, value, cost, pnlAbs, pnlPct, change24hPct: changePct };
-  });
-
-  const dayChangePct = totalValue ? dayChangeAbs / totalValue * 100 : 0;
-  const totalPnlAbs = totalValue - totalCost;
-  const totalPnlPct = totalCost ? totalPnlAbs / totalCost * 100 : 0;
-
-  if (totalValue > 0) {
-    detailed.forEach(h => { h.allocationPct = h.value / totalValue * 100; });
-  } else {
-    detailed.forEach(h => { h.allocationPct = 0; });
-  }
-
-  let best = null, worst = null;
-  const movers = detailed.filter(h => h.value > 10 && isFinite(h.change24hPct));
-  if (movers.length) {
-    movers.sort((a,b) => b.change24hPct - a.change24hPct);
-    best = movers[0];
-    worst = movers[movers.length - 1];
-  }
-
-  detailed.sort((a,b) => b.value - a.value);
-
-  return {
-    totals: { totalValue, totalCost, totalPnlAbs, totalPnlPct, dayChangeAbs, dayChangePct },
-    holdings: detailed,
-    best, worst
-  };
 }
 
 /* ---------------------- Synthetic curve & indicators ---------------------- */
@@ -1056,6 +1119,153 @@ function computeSeriesMetrics(series) {
     if (dd<maxDD) maxDD=dd;
   }
   return { annualizedReturn, volatility:annualizedVol, sharpe, maxDrawdown:maxDD };
+}
+
+const PINNABLE_METRICS = {
+  totalValue: {
+    label: "Total balance",
+    detail: "Mark to market right now",
+    resolve: (portfolioData) => {
+      const total = portfolioData?.totals?.totalValue || 0;
+      return { value: formatCurrency(total), detail: "Across all held assets", trend: total };
+    }
+  },
+  pnlPct: {
+    label: "Unrealized P/L",
+    detail: "Vs. cost basis",
+    resolve: (portfolioData) => {
+      const totals = portfolioData?.totals || {};
+      return {
+        value: isFinite(totals.totalPnlPct) ? formatPercent(totals.totalPnlPct) : "--",
+        detail: formatCurrency(totals.totalPnlAbs || 0),
+        trend: totals.totalPnlPct
+      };
+    }
+  },
+  sharpe: {
+    label: "Sharpe",
+    detail: "Risk adjusted",
+    resolve: () => {
+      const series = state.chartSeries["30d"] || state.chartSeries[state.timeframe];
+      const metrics = computeSeriesMetrics(series || []);
+      return {
+        value: isFinite(metrics.sharpe) ? metrics.sharpe.toFixed(2) : "--",
+        detail: isFinite(metrics.volatility) ? `Vol ${formatPercent(metrics.volatility*100)}` : "Add curve",
+        trend: metrics.sharpe
+      };
+    }
+  },
+  drawdown: {
+    label: "Max drawdown",
+    detail: "Peak-to-trough",
+    resolve: () => {
+      const series = state.chartSeries["30d"] || state.chartSeries[state.timeframe];
+      const metrics = computeSeriesMetrics(series || []);
+      return {
+        value: isFinite(metrics.maxDrawdown) ? formatPercent(metrics.maxDrawdown*100) : "--",
+        detail: "From synthetic curve",
+        trend: -Math.abs(metrics.maxDrawdown || 0)
+      };
+    }
+  },
+  var: {
+    label: "VaR",
+    detail: "95% · 1d",
+    resolve: () => {
+      const risk = state.lastRisk;
+      if (!risk) return { value: "--", detail: "Add holdings to simulate", trend: null };
+      return {
+        value: `${formatCurrency(risk.varAbs1d)} (${formatPercent(risk.varPct1d*100)})`,
+        detail: `5d: ${formatPercent(risk.varPct5d*100)}`,
+        trend: -risk.varPct1d
+      };
+    }
+  },
+  scenario: {
+    label: "Scenario outcome",
+    detail: "Macro what-if",
+    resolve: () => {
+      const out = state.lastScenarioOutcome;
+      if (!out) return { value: "--", detail: "Pick a macro backdrop", trend: null };
+      return {
+        value: formatCurrency(out.projectedValue),
+        detail: `${out.label} · ${formatPercent(out.pnlPct*100)}`,
+        trend: out.pnlPct
+      };
+    }
+  },
+  backtest: {
+    label: "Backtest CAGR",
+    detail: "Synthetic monthly",
+    resolve: () => {
+      const bt = state.lastBacktest;
+      if (!bt) return { value: "--", detail: "Needs holdings", trend: null };
+      return {
+        value: isFinite(bt.cagr) ? formatPercent(bt.cagr*100) : "--",
+        detail: `Sharpe ${isFinite(bt.sharpe)?bt.sharpe.toFixed(2):"--"}`,
+        trend: bt.cagr
+      };
+    }
+  },
+  winRate: {
+    label: "Win rate",
+    detail: "Green months",
+    resolve: () => {
+      const bt = state.lastBacktest;
+      if (!bt) return { value: "--", detail: "Needs holdings", trend: null };
+      return {
+        value: isFinite(bt.winRate) ? formatPercent(bt.winRate*100) : "--",
+        detail: `${bt.portfolioCurve?.length ? bt.portfolioCurve.length-1 : 0} months tested`,
+        trend: bt.winRate
+      };
+    }
+  }
+};
+
+function resolvePinMetric(key, portfolioData) {
+  const cfg = PINNABLE_METRICS[key];
+  if (!cfg) return null;
+  const base = cfg.resolve(portfolioData);
+  return { label: cfg.label, detail: cfg.detail, ...base };
+}
+
+function renderPinnedDashboard(portfolioData) {
+  if (!el.pinnedGrid) return;
+  const pins = state.pinnedMetrics || [];
+  if (!pins.length) {
+    el.pinnedGrid.innerHTML = '<p class="text-[11px] text-slate-500">Select metrics to pin above.</p>';
+    return;
+  }
+  const cards = pins.map(key => {
+    const metric = resolvePinMetric(key, portfolioData) || { value:"--", detail:"" };
+    const tone = !isFinite(metric.trend) ? "text-slate-100" : (metric.trend>0 ? "text-emerald-200" : metric.trend<0 ? "text-rose-200" : "text-slate-100");
+    return `
+      <div class="rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-2.5 shadow-sm shadow-emerald-500/5">
+        <div class="flex items-center justify-between gap-2">
+          <p class="text-[10px] uppercase tracking-[0.18em] text-slate-500">${metric.label}</p>
+          <span class="text-[10px] text-slate-500">${metric.detail || ''}</span>
+        </div>
+        <p class="mt-1 text-lg font-semibold ${tone}">${metric.value}</p>
+        ${metric.detail ? `<p class="text-[10px] text-slate-500">${metric.detail}</p>` : ''}
+      </div>
+    `;
+  }).join("");
+  el.pinnedGrid.innerHTML = cards;
+  document.querySelectorAll('.pin-toggle').forEach(cb => {
+    const key = cb.getAttribute('data-pin-key');
+    cb.checked = pins.includes(key);
+  });
+}
+
+function handlePinToggle(e) {
+  const key = e.target.getAttribute("data-pin-key");
+  if (!key) return;
+  const checked = !!e.target.checked;
+  const next = new Set(state.pinnedMetrics || []);
+  if (checked) next.add(key); else next.delete(key);
+  state.pinnedMetrics = Array.from(next);
+  saveJson(STORAGE_KEYS.pinned, state.pinnedMetrics);
+  renderPinnedDashboard(state.lastPortfolioData);
 }
 
 /* ---------------------- Chart drawing & TA ---------------------- */
@@ -1396,11 +1606,17 @@ function renderAdvancedMetrics(portfolioData, series) {
   updateTrendClass(el.metricVolatility, -volatility);
   updateTrendClass(el.metricMaxDD, -maxDrawdown);
 }
-function computeCumulativeReturn(series) {
-  if (!series || series.length<2) return NaN;
-  const first = series[0].value, last = series[series.length-1].value;
-  if (!first || !last) return NaN;
-  return last/first - 1;
+function renderScenarioOutput(outcome) {
+  if (!el.scenarioResultValue || !el.scenarioResultPnl) return;
+  if (!outcome) {
+    el.scenarioResultValue.textContent = "--";
+    el.scenarioResultPnl.textContent = "--";
+    if (el.scenarioNote) el.scenarioNote.textContent = "Add holdings and pick a backdrop.";
+    return;
+  }
+  el.scenarioResultValue.textContent = formatCurrency(outcome.projectedValue);
+  el.scenarioResultPnl.textContent = `${formatCurrency(outcome.pnlAbs)} (${formatPercent(outcome.pnlPct*100)})`;
+  if (el.scenarioNote) el.scenarioNote.textContent = outcome.note || "Macro sensitivity estimate.";
 }
 function renderBenchmarksAndScenario(portfolioData) {
   const totalValue = portfolioData.totals.totalValue || 0;
@@ -1411,8 +1627,7 @@ function renderBenchmarksAndScenario(portfolioData) {
   ];
   if (!totalValue || !portfolioData.holdings.length || !state.chartSeries["30d"]) {
     ids.forEach(id => { const n=document.getElementById(id); if(n) n.textContent="--"; });
-    if (el.scenarioResultValue) el.scenarioResultValue.textContent="--";
-    if (el.scenarioResultPnl) el.scenarioResultPnl.textContent="--";
+    renderScenarioOutput(null);
     return;
   }
   const series30 = state.chartSeries["30d"];
@@ -1433,95 +1648,50 @@ function renderBenchmarksAndScenario(portfolioData) {
   setText("perf-quarter-nasdaq",BENCHMARK_RETURNS.quarter.nasdaq);
   setText("perf-year-nasdaq",BENCHMARK_RETURNS.year.nasdaq);
 }
+function renderBacktest(portfolioData) {
+  if (!el.backtestCagr || !el.backtestSharpe || !el.backtestMaxdd || !el.backtestWinrate) return;
+  const res = backtestPortfolioStrategies(portfolioData);
+  state.lastBacktest = res;
+  if (!res) {
+    el.backtestCagr.textContent = "--";
+    el.backtestSharpe.textContent = "--";
+    el.backtestMaxdd.textContent = "--";
+    el.backtestWinrate.textContent = "--";
+    if (el.backtestNote) el.backtestNote.textContent = "Needs holdings and prices to synthesize a curve.";
+    return;
+  }
+  el.backtestCagr.textContent = formatPercent(res.cagr*100);
+  el.backtestSharpe.textContent = isFinite(res.sharpe) ? res.sharpe.toFixed(2) : "--";
+  el.backtestMaxdd.textContent = formatPercent(res.maxDrawdown*100);
+  el.backtestWinrate.textContent = formatPercent((res.winRate||0)*100);
+  if (el.backtestNote) el.backtestNote.textContent = `Benchmarked vs toy market basket; ${res.portfolioCurve.length-1} months.`;
+}
 function handleScenarioSubmit(e) {
   e.preventDefault();
-  if (!state.lastPortfolioData) return;
-  const totalValue = state.lastPortfolioData.totals.totalValue || 0;
-  const extra = parseFloat(el.scenarioAmount.value || "0");
-  const move  = parseFloat(el.scenarioMove.value || "0");
-  const validExtra = isFinite(extra)&&extra>0?extra:0;
-  const future = (totalValue+validExtra)*(1+move);
-  const invested = totalValue+validExtra;
-  const pnl = future-invested;
-  if (el.scenarioResultValue) el.scenarioResultValue.textContent = formatCurrency(future);
-  if (el.scenarioResultPnl) {
-    const pct = invested? pnl/invested*100:0;
-    el.scenarioResultPnl.textContent = formatCurrency(pnl)+" ("+formatPercent(pct)+")";
+  runScenarioFromInputs();
+}
+function runScenarioFromInputs() {
+  if (!state.lastPortfolioData || !state.lastPortfolioData.holdings.length) {
+    state.lastScenarioOutcome = null;
+    renderScenarioOutput(null);
+    return null;
   }
-  if (el.scenarioNote) {
-    el.scenarioNote.textContent="Simple linear scenario on your current stack + extra capital.";
-  }
+  const extra = parseFloat(el.scenarioAmount?.value || "0");
+  const preset = el.scenarioPreset?.value || "reflation";
+  const moveRaw = el.scenarioMove?.value ?? "";
+  const custom = moveRaw === "" ? null : parseFloat(moveRaw);
+  const outcome = projectScenarioOutcome(state.lastPortfolioData, {
+    scenarioKey: preset,
+    extraInvestment: isFinite(extra) && extra>0 ? extra : 0,
+    customMove: isFinite(custom) ? custom : null
+  });
+  state.lastScenarioOutcome = outcome;
+  renderScenarioOutput(outcome);
+  renderPinnedDashboard(state.lastPortfolioData);
+  return outcome;
 }
 
 /* ---------------------- Risk: Monte Carlo + correlations ---------------------- */
-function simulateAssetReturns(asset, days) {
-  const info = state.priceData[asset.id] || {};
-  const dailyChangePct = typeof info.usd_24h_change === "number" ? info.usd_24h_change : 0;
-  const mean = dailyChangePct/100 / 2;      // shrinked
-  const vol  = 0.06;                        // 6% daily stdev as rough crypto
-  const arr = [];
-  for (let i=0;i<days;i++) {
-    const z = (Math.random()+Math.random()+Math.random()+Math.random()-2)/2; // approx normal
-    arr.push(mean + vol*z);
-  }
-  return arr;
-}
-function computeVaRAndCorrelations(portfolioData) {
-  const totalValue = portfolioData.totals.totalValue || 0;
-  if (!totalValue || !portfolioData.holdings.length) return null;
-
-  const top = portfolioData.holdings.slice(0,6);
-  const weights = {};
-  top.forEach(h => { weights[h.id]=(h.value||0)/totalValue; });
-
-  const days = 60;
-  const returnsByAsset = {};
-  top.forEach(a => { returnsByAsset[a.id]=simulateAssetReturns(a, days); });
-
-  const portfolioReturns=[];
-  for (let i=0;i<days;i++) {
-    let r=0;
-    top.forEach(a => {
-      const arr=returnsByAsset[a.id]||[];
-      if (arr[i]==null) return;
-      r += (weights[a.id]||0)*arr[i];
-    });
-    portfolioReturns.push(r);
-  }
-  const sorted = portfolioReturns.slice().sort((a,b)=>a-b);
-  const idx = Math.max(0, Math.floor(0.05*sorted.length)-1);
-  const q = sorted[idx];
-  const varPct1d = Math.max(0,-q);
-  const varAbs1d = totalValue*varPct1d;
-  const varPct5d = varPct1d*Math.sqrt(5);
-  const varAbs5d = totalValue*varPct5d;
-
-  // correlation matrix
-  const n = top.length;
-  const matrix = Array.from({length:n},()=>Array(n).fill(1));
-  function mean(a){return a.reduce((s,x)=>s+x,0)/a.length;}
-  for (let i=0;i<n;i++) {
-    const rI = returnsByAsset[top[i].id];
-    const muI = mean(rI); let varI=0;
-    for (let k=0;k<rI.length;k++) varI+=(rI[k]-muI)**2;
-    varI /= (rI.length-1);
-    const sigmaI = Math.sqrt(Math.max(varI,1e-9));
-    for (let j=i+1;j<n;j++) {
-      const rJ = returnsByAsset[top[j].id];
-      const muJ = mean(rJ); let varJ=0;
-      for (let k=0;k<rJ.length;k++) varJ+=(rJ[k]-muJ)**2;
-      varJ/=(rJ.length-1);
-      const sigmaJ = Math.sqrt(Math.max(varJ,1e-9));
-      let cov=0;
-      for (let k=0;k<days;k++) cov+=(rI[k]-muI)*(rJ[k]-muJ);
-      cov/=(days-1);
-      const corr = cov/(sigmaI*sigmaJ);
-      matrix[i][j]=matrix[j][i]=corr;
-    }
-  }
-  for (let i=0;i<n;i++) matrix[i][i]=1;
-  return { varAbs1d,varPct1d,varAbs5d,varPct5d, matrix, assets: top };
-}
 function correlationColor(v) {
   if (!isFinite(v)) return "rgba(30,64,175,0.6)";
   const x = Math.max(-1,Math.min(1,v));
@@ -1556,6 +1726,7 @@ function updateStressSummary(portfolioData, shock) {
 function renderRiskMetrics(portfolioData) {
   if (!el.metricVaR1d || !el.metricVaR1dPct || !el.metricVaR5d) return;
   const res = computeVaRAndCorrelations(portfolioData);
+  state.lastRisk = res;
   if (!res) {
     el.metricVaR1d.textContent="--";
     el.metricVaR1dPct.textContent="--";
@@ -2060,6 +2231,9 @@ function renderAll() {
   renderChartSection(data);
   renderRiskMetrics(data);
   renderBenchmarksAndScenario(data);
+  renderBacktest(data);
+  runScenarioFromInputs();
+  renderPinnedDashboard(data);
   renderAlerts();
 }
 
@@ -2334,6 +2508,7 @@ function init() {
   state.portfolio = loadPortfolio();
   state.watchlist = loadWatchlist();
   state.alerts    = loadAlerts();
+  state.pinnedMetrics = loadPins();
 
   populateSelects();
   const data = calculatePortfolio(state.portfolio,state.priceData);
@@ -2363,6 +2538,9 @@ function init() {
   if (el.drawClear) el.drawClear.addEventListener("click", handleDrawClear);
   if (el.chartCanvas) el.chartCanvas.addEventListener("click", handleChartClick);
   if (el.scenarioForm) el.scenarioForm.addEventListener("submit", handleScenarioSubmit);
+  document.querySelectorAll('.pin-toggle').forEach(cb=>cb.addEventListener('change', handlePinToggle));
+  if (el.scenarioPreset) el.scenarioPreset.addEventListener("change", runScenarioFromInputs);
+  if (el.scenarioMove) el.scenarioMove.addEventListener("change", runScenarioFromInputs);
   if (el.riskStressSelect) el.riskStressSelect.addEventListener("change", ()=>{
     const data = state.lastPortfolioData || calculatePortfolio(state.portfolio,state.priceData);
     updateStressSummary(data, parseFloat(el.riskStressSelect.value||"-0.25"));
